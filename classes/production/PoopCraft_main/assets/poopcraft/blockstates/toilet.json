@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model" : "poopcraft:toilet",
+    "textures": {
+      "all": "minecraft:blocks/stone"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "poopcraft:toilet"
+    },
+    "inventory": {
+      "model": "poopcraft:toilet"
+    }
+  }
+}

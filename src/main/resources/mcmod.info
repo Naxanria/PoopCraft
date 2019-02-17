@@ -1,0 +1,12 @@
+[
+{
+  "modid": "poopcraft",
+  "name": "Poopcraft",
+  "description": "Everybody poops, nobody shits.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Naxanria"]
+}
+]
