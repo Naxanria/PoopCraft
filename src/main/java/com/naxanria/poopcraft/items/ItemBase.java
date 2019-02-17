@@ -1,5 +1,6 @@
 package com.naxanria.poopcraft.items;
 
+import com.naxanria.poopcraft.PoopCraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -13,6 +14,8 @@ public class ItemBase extends Item implements IItemBase
     
     setUnlocalizedName(name);
     setRegistryName(name);
+    
+    setCreativeTab(PoopCraft.tab);
   }
   
   @Override

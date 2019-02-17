@@ -3,7 +3,7 @@ package com.naxanria.poopcraft.blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 
-public class BlockToilet extends BlockBase
+public class BlockToilet extends BlockFacingBase
 {
   public BlockToilet()
   {

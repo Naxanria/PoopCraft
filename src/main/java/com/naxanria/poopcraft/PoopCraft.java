@@ -6,6 +6,7 @@ import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.init.registry.BlockRegistry;
 import com.naxanria.poopcraft.init.registry.ItemRegistry;
 import com.naxanria.poopcraft.proxy.CommonProxy;
+import com.naxanria.poopcraft.tab.PoopCraftTab;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -34,6 +35,8 @@ public class PoopCraft
   public static final String PACKAGE = "com.naxanria." + MODID;
   public static final String PROXY = PACKAGE + ".proxy";
   
+  public static PoopCraftTab tab;
+  
   public static Logger logger;
   
   @Mod.Instance
@@ -50,6 +53,8 @@ public class PoopCraft
     logger.info("PreInit");
     
     proxy.registerHandler(new EventHandler());
+    
+    tab = new PoopCraftTab();
   }
   
   @Mod.EventHandler

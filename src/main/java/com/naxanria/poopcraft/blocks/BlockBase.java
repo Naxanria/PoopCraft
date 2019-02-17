@@ -22,6 +22,8 @@ public class BlockBase extends Block implements IBlockBase
     
     setUnlocalizedName(name);
     setRegistryName(name);
+    
+    setCreativeTab(PoopCraft.tab);
   }
   
   public Item getAsItem()
