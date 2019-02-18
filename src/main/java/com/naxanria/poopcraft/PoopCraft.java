@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 public class PoopCraft
 {
   public static final String MODID = "poopcraft";
-  public static final String NAME = "Poopcraft";
+  public static final String NAME = "PoopCraft";
   public static final String VERSION = "${version}";
   
   public static final String PACKAGE = "com.naxanria." + MODID;
