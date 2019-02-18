@@ -21,7 +21,7 @@ public class ItemBase extends Item implements IItemBase
   @Override
   public void registerItemModel()
   {
-  
+    PoopCraft.proxy.registerItemRender(this, 0, name);
   }
   
   @Override
