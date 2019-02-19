@@ -1,4 +1,4 @@
-package com.naxanria.poopcraft.blocks;
+package com.naxanria.poopcraft.blocks.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

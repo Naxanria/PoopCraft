@@ -1,5 +1,6 @@
-package com.naxanria.poopcraft.blocks;
+package com.naxanria.poopcraft.blocks.base;
 
+import com.naxanria.poopcraft.tile.base.TileEntityBase;
 import com.naxanria.poopcraft.util.WorldUtil;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -17,24 +18,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class BlockFacingBase extends BlockBase
+public abstract class BlockTileFacingBase<TE extends TileEntityBase> extends BlockTileBase<TE>
 {
   public static final PropertyDirection FACING = BlockHorizontal.FACING;
   
   protected boolean mirrorPlacement = false;
   
-  public BlockFacingBase(Material blockMaterial, String name, boolean mirrorPlacement)
+  public BlockTileFacingBase(Material blockMaterial, String name)
+  {
+    this(blockMaterial, name, false);
+  }
+  
+  public BlockTileFacingBase(Material blockMaterial, String name, boolean mirrorPlacement)
   {
     super(blockMaterial, name);
     
     setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     
     this.mirrorPlacement = mirrorPlacement;
-  }
-  
-  public BlockFacingBase(Material blockMaterial, String name)
-  {
-    this(blockMaterial, name, false);
   }
   
   @Override
@@ -61,8 +62,8 @@ public class BlockFacingBase extends BlockBase
   {
     return
       (mirrorPlacement)
-      ? getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite())
-      : getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+        ? getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite())
+        : getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
   }
   
   @Override

@@ -1,7 +1,8 @@
 package com.naxanria.poopcraft.init.registry;
 
 import com.naxanria.poopcraft.PoopCraft;
-import com.naxanria.poopcraft.blocks.IBlockBase;
+import com.naxanria.poopcraft.blocks.base.BlockTileBase;
+import com.naxanria.poopcraft.blocks.base.IBlockBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -34,6 +35,11 @@ public class BlockRegistry extends Registry<IBlockBase, IForgeRegistry<Block>>
       }
       
       registry.register(b.createItemBlock());
+      
+      if (b instanceof BlockTileBase)
+      {
+        ((BlockTileBase) b).registerTileEntity();
+      }
     }
   }
   

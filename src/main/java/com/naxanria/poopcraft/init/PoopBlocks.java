@@ -1,6 +1,6 @@
 package com.naxanria.poopcraft.init;
 
-import com.naxanria.poopcraft.blocks.BlockBase;
+import com.naxanria.poopcraft.blocks.base.BlockBase;
 import com.naxanria.poopcraft.blocks.BlockToilet;
 import com.naxanria.poopcraft.init.registry.BlockRegistry;
 

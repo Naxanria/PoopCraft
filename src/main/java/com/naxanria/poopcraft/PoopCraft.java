@@ -5,6 +5,7 @@ import com.naxanria.poopcraft.init.PoopBlocks;
 import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.init.registry.BlockRegistry;
 import com.naxanria.poopcraft.init.registry.ItemRegistry;
+import com.naxanria.poopcraft.network.PacketHandler;
 import com.naxanria.poopcraft.proxy.CommonProxy;
 import com.naxanria.poopcraft.tab.PoopCraftTab;
 import net.minecraft.block.Block;
@@ -51,6 +52,8 @@ public class PoopCraft
     logger = event.getModLog();
     
     logger.info("PreInit");
+  
+    PacketHandler.init();
     
     proxy.registerHandler(new EventHandler());
     
