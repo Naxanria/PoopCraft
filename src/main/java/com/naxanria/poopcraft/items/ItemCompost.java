@@ -1,5 +1,11 @@
 package com.naxanria.poopcraft.items;
 
-public class ItemCompost
+import com.naxanria.poopcraft.items.base.ItemBase;
+
+public class ItemCompost extends ItemBase
 {
+  public ItemCompost()
+  {
+    super("compost");
+  }
 }

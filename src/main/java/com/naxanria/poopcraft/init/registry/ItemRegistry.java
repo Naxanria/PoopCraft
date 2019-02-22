@@ -1,6 +1,6 @@
 package com.naxanria.poopcraft.init.registry;
 
-import com.naxanria.poopcraft.items.IItemBase;
+import com.naxanria.poopcraft.items.base.IItemBase;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 

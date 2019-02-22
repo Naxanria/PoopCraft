@@ -1,4 +1,4 @@
-package com.naxanria.poopcraft.items;
+package com.naxanria.poopcraft.items.base;
 
 import com.naxanria.poopcraft.PoopCraft;
 import net.minecraft.creativetab.CreativeTabs;

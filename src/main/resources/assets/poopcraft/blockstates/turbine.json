@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model" : "poopcraft:toilet",
+    "model" : "poopcraft:turbine",
     "textures": {
       "all": "minecraft:blocks/stone"
     }

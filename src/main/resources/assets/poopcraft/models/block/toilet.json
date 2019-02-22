@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"parent" : "block/cube",
 	"textures": {
 		"0": "poopcraft:blocks/toilet/light",
 		"1": "poopcraft:blocks/toilet/dark",
