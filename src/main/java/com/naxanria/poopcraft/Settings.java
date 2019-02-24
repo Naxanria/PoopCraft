@@ -2,6 +2,10 @@ package com.naxanria.poopcraft;
 
 import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.util.PoopCapabilities;
+import com.naxanria.poopcraft.util.SettingsHelper;
+import com.naxanria.poopcraft.util.StackUtil;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.HashMap;
@@ -21,6 +25,8 @@ public class Settings
     public static int compostStorage = 9;
     public static int compostAmountNeeded = 120;
     
+    public static int autoOutputAmount = 4;
+    
     public static Map<String, PoopCapabilities> poopCapabilities = new HashMap<>();
   }
   
@@ -29,18 +35,18 @@ public class Settings
   {
     
     // todo: load in the poop data with json
+//
+//    PoopCapabilities capabilities = new PoopCapabilities();
+//    capabilities.compostAmount = 15;
+//    capabilities.compostSpeed = 15;
+//    capabilities.methaneAmount = 10;
+//    capabilities.id = StackUtil.getItemId(new ItemStack(PoopItems.POOP));
+//
+//    registerCapabilities(capabilities);
+//
+    SettingsHelper.registerCapabilities(new ItemStack(PoopItems.POOP), 1, 1, 60);
     
-    PoopCapabilities capabilities = new PoopCapabilities();
-    capabilities.compostAmount = 15;
-    capabilities.compostSpeed = 15;
-    capabilities.methaneAmount = 10;
-    capabilities.id = PoopItems.POOP.getUnlocalizedName();
-    
-    registerCapabilities(capabilities);
   }
   
-  public static void registerCapabilities(PoopCapabilities capabilities)
-  {
-    COMPOSTER.poopCapabilities.put(capabilities.id, capabilities);
-  }
+  
 }

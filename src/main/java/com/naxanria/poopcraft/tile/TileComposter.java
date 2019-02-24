@@ -2,18 +2,20 @@ package com.naxanria.poopcraft.tile;
 
 import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.Settings;
+import com.naxanria.poopcraft.blocks.BlockComposter;
 import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.tile.base.TileEntityTickingBase;
 import com.naxanria.poopcraft.tile.base.inventory.ItemStackHandlerBase;
-import com.naxanria.poopcraft.util.FacingHelper;
-import com.naxanria.poopcraft.util.PoopCapabilities;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
+import com.naxanria.poopcraft.util.*;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +27,7 @@ public class TileComposter extends TileEntityTickingBase
   private int methaneStored = 0;
   private int methaneCapacity = Settings.COMPOSTER.methaneStorage;
   
-  private Item converting;
+  private ItemStack converting;
   private PoopCapabilities capabilities;
   
   private int convertTime = 0;
@@ -33,9 +35,16 @@ public class TileComposter extends TileEntityTickingBase
   
   private int compostTotal = 0;
   
+  private EnumFacing currentFacing;
+  
   @Override
   protected void entityUpdate()
   {
+    if (world.isRemote)
+    {
+      return;
+    }
+    
     if (converting == null)
     {
       if (hasSpace())
@@ -44,14 +53,18 @@ public class TileComposter extends TileEntityTickingBase
   
         if (converting != null)
         {
-          capabilities = getPoopCapabilities(converting);
-    
+          capabilities = SettingsHelper.getPoopCapabilities(converting);
+  
           if (capabilities == null)
           {
-            PoopCraft.logger.error(converting.getUnlocalizedName() + " is not a valid poop!.");
-      
+            if (converting.getItem() != Items.AIR)
+            {
+              PoopCraft.logger.error(StackUtil.getItemId(converting) + " is not a valid poop!.");
+              new Exception().printStackTrace();
+            }
             converting = null;
-          } else
+          }
+          else
           {
             convertTotalTime = capabilities.compostSpeed;
             convertTime = 0;
@@ -59,31 +72,91 @@ public class TileComposter extends TileEntityTickingBase
         }
       }
     }
-    
+  
     if (converting != null)
     {
       if (convertTime++ < convertTotalTime)
       {
+        //PoopCraft.logger.info("converting... " + convertTime + " " + StackUtil.getItemId(converting) + " | " + compostTotal + "|" + methaneStored);
+  
         compostTotal += capabilities.compostAmount;
         methaneStored += capabilities.methaneAmount;
-        
+  
         if (methaneStored >= methaneCapacity)
         {
-          methaneStored = methaneCapacity;
+          
+          methaneStored = methaneCapacity / 2;
         }
-      }
-      else
+      } else
       {
         converting = null;
         capabilities = null;
+        convertTime = 0;
       }
     }
-    
+  
     if (compostTotal >= Settings.COMPOSTER.compostAmountNeeded)
     {
       if (createCompost())
       {
         compostTotal -= Settings.COMPOSTER.compostAmountNeeded;
+      }
+    }
+  
+    if (getTicks() % 5 == 0)
+    {
+      sendCompostAway();
+    }
+    
+    markDirty();
+  }
+  
+  private void sendCompostAway()
+  {
+    EnumFacing compostFacing = getCurrentFacing().getOpposite();
+    BlockPos posToCheck = pos.offset(compostFacing);
+  
+    TileEntity te = world.getTileEntity(posToCheck);
+  
+    if (te != null)
+    {
+      if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, compostFacing.getOpposite()))
+      {
+        IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, compostFacing.getOpposite());
+        if (handler != null)
+        {
+//          PoopCraft.logger.info(compostFacing.toString() + " " + compostFacing.getOpposite().toString() + " " + te.getClass().getCanonicalName());
+        
+          int total = 0;
+          int max = Settings.COMPOSTER.autoOutputAmount;
+        
+          for (int i = 0; i < compostStorage.getSlots(); i++)
+          {
+            ItemStack stack = compostStorage.getStackInSlot(i);
+          
+            if (stack.isEmpty())
+            {
+              continue;
+            }
+          
+            int amount = Math.min(Math.max(max, total - max), stack.getCount());
+            
+//            PoopCraft.logger.info("Amount to transfer: " + amount);
+          
+            ItemStack insert = stack.copy();
+            insert.setCount(amount);
+          
+            ItemStack remainder = ItemHandlerHelper.insert(handler, insert);
+          
+            total += amount - remainder.getCount();
+            stack.shrink(amount - remainder.getCount());
+          
+            if (total >= max)
+            {
+              break;
+            }
+          }
+        }
       }
     }
   }
@@ -114,7 +187,7 @@ public class TileComposter extends TileEntityTickingBase
       
       if (stack.isEmpty())
       {
-        compostStorage.setStackInSlot(i, new ItemStack(PoopItems.POOP));
+        compostStorage.setStackInSlot(i, new ItemStack(PoopItems.COMPOST));
         
         return true;
       }
@@ -132,36 +205,28 @@ public class TileComposter extends TileEntityTickingBase
     return false;
   }
   
-  private PoopCapabilities getPoopCapabilities(Item item)
+  public ItemStack getNextToConverting()
   {
-    String itemId = item.getUnlocalizedName();
-  
-    PoopCraft.logger.info(itemId);
-    
-    PoopCapabilities capabilities = Settings.COMPOSTER.poopCapabilities.getOrDefault(item, null);
-    
-    return capabilities;
-  }
-  
-  private boolean hasPoopCapabilities(Item item)
-  {
-    return getPoopCapabilities(item) != null;
-  }
-  
-  public Item getNextToConverting()
-  {
+//    PoopCraft.logger.info("Trying to get next for converting");
     for (int i = 0; i < poopStorage.getSlots(); i++)
     {
       ItemStack stack = poopStorage.getStackInSlot(i);
       
-      if (stack.isEmpty())
+//      PoopCraft.logger.info("Checking for slot=" + i + ";item=" + StackUtil.getItemId(stack));
+      
+      if (stack.isEmpty() || stack.getItem() == Items.AIR)
       {
         continue;
       }
       
       stack.setCount(stack.getCount() - 1);
+  
+      ItemStack convertingStack = stack.copy();
+      convertingStack.setCount(1);
       
-      return stack.getItem();
+//      PoopCraft.logger.info("Trying to convert " + StackUtil.getItemId(convertingStack));
+      
+      return convertingStack;
     }
     
     return null;
@@ -169,16 +234,28 @@ public class TileComposter extends TileEntityTickingBase
   
   private boolean isItemPoop(int slot, ItemStack stack)
   {
-    return hasPoopCapabilities(stack.getItem());
+    PoopCraft.logger.info("Checking for: " + StackUtil.getItemId(stack));
+    
+    PoopCapabilities capabilities = SettingsHelper.getPoopCapabilities(stack);
+    
+    PoopCraft.logger.info(capabilities);
+    
+    return SettingsHelper.hasPoopCapabilities(stack);
   }
   
   private EnumFacing getCurrentFacing()
   {
-    IBlockState state = world.getBlockState(pos);
+    if (currentFacing != null)
+    {
+      return currentFacing;
+    }
+    
+    return currentFacing = getProperty(BlockComposter.FACING);
+  }
   
-    
-    
-    return state.getValue(BlockDirectional.FACING);
+  public void invalidateCurrentFacing()
+  {
+    currentFacing = null;
   }
   
   @Override
@@ -186,9 +263,7 @@ public class TileComposter extends TileEntityTickingBase
   {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
     {
-      EnumFacing currentFacing = getCurrentFacing();
-      
-      if (FacingHelper.getLeft(currentFacing) == facing || facing == EnumFacing.UP)
+      if (facing == EnumFacing.UP || FacingHelper.getLeft(getCurrentFacing()) == facing)
       {
         return true;
       }
@@ -201,22 +276,64 @@ public class TileComposter extends TileEntityTickingBase
   @Override
   public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
   {
-  
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
     {
-      EnumFacing currentFacing = getCurrentFacing();
-    
       if (facing == EnumFacing.UP)
       {
         return (T) poopStorage;
       }
-      
-      else if (FacingHelper.getLeft(currentFacing) == facing)
+      else if (FacingHelper.getLeft(getCurrentFacing()) == facing)
       {
         return (T) compostStorage;
       }
     }
     
     return super.getCapability(capability, facing);
+  }
+  
+  @Override
+  public void writeSyncableNBT(NBTTagCompound compound)
+  {
+    compound.setTag("PoopStorage", poopStorage.serializeNBT());
+    compound.setTag("CompostStorage", compostStorage.serializeNBT());
+    
+    if (converting != null)
+    {
+      NBTTagCompound convertingTag = new NBTTagCompound();
+      converting.writeToNBT(convertingTag);
+      
+      compound.setTag("Converting", convertingTag);
+    }
+    
+    compound.setInteger("MethaneStored", methaneStored);
+    compound.setInteger("ConvertTime", convertTime);
+    compound.setInteger("ConvertTotalTime", convertTotalTime);
+    compound.setInteger("CompostTotal", compostTotal);
+    
+    super.writeSyncableNBT(compound);
+  }
+  
+  @Override
+  public void readSyncableNBT(NBTTagCompound compound)
+  {
+    poopStorage.deserializeNBT(compound.getCompoundTag("PoopStorage"));
+    compostStorage.deserializeNBT(compound.getCompoundTag("CompostStorage"));
+    
+    if (compound.hasKey("Converting"))
+    {
+      if (converting == null)
+      {
+        converting = new ItemStack(Items.AIR);
+      }
+      
+      converting.deserializeNBT(compound.getCompoundTag("Converting"));
+    }
+    
+    methaneStored = compound.getInteger("MethaneStored");
+    convertTime = compound.getInteger("ConvertTime");
+    convertTotalTime = compound.getInteger("ConvertTotalTime");
+    compostTotal = compound.getInteger("CompostTotal");
+    
+    super.readSyncableNBT(compound);
   }
 }

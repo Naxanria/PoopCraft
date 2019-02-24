@@ -1,5 +1,6 @@
 package com.naxanria.poopcraft;
 
+import com.naxanria.poopcraft.handler.ClientEventHandler;
 import com.naxanria.poopcraft.handler.EventHandler;
 import com.naxanria.poopcraft.init.PoopBlocks;
 import com.naxanria.poopcraft.init.PoopItems;
@@ -20,6 +21,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Set;
 
 @Mod
 (
@@ -56,6 +59,7 @@ public class PoopCraft
     PacketHandler.init();
     
     proxy.registerHandler(new EventHandler());
+    proxy.registerHandler(new ClientEventHandler());
     
     tab = new PoopCraftTab();
   }
@@ -64,6 +68,8 @@ public class PoopCraft
   public void init(FMLInitializationEvent event)
   {
     logger.info("Init");
+  
+    Settings.init();
   }
   
   @Mod.EventHandler

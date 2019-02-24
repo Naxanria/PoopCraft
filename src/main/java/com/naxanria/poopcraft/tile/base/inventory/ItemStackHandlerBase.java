@@ -1,5 +1,7 @@
 package com.naxanria.poopcraft.tile.base.inventory;
 
+import com.naxanria.poopcraft.PoopCraft;
+import com.naxanria.poopcraft.util.StackUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
@@ -104,6 +106,7 @@ public class ItemStackHandlerBase extends ItemStackHandler
   @Override
   public boolean isItemValid(int slot, @Nonnull ItemStack stack)
   {
+    PoopCraft.logger.info("Checking for slot " + slot + " for stack: " + StackUtil.getItemId(stack));
     return slotValidator == null ? super.isItemValid(slot, stack) : slotValidator.isItemValid(slot, stack);
   }
   
