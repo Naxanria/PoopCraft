@@ -1,10 +1,13 @@
 package com.naxanria.poopcraft;
 
+import com.naxanria.poopcraft.fluid.base.BlockFluidBase;
 import com.naxanria.poopcraft.handler.ClientEventHandler;
 import com.naxanria.poopcraft.handler.EventHandler;
 import com.naxanria.poopcraft.init.PoopBlocks;
+import com.naxanria.poopcraft.init.PoopFluids;
 import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.init.registry.BlockRegistry;
+import com.naxanria.poopcraft.init.registry.FluidRegistry;
 import com.naxanria.poopcraft.init.registry.ItemRegistry;
 import com.naxanria.poopcraft.network.PacketHandler;
 import com.naxanria.poopcraft.proxy.CommonProxy;
@@ -32,6 +35,11 @@ import java.util.Set;
 )
 public class PoopCraft
 {
+  static
+  {
+    net.minecraftforge.fluids.FluidRegistry.enableUniversalBucket();
+  }
+  
   public static final String MODID = "poopcraft";
   public static final String NAME = "PoopCraft";
   public static final String VERSION = "${version}";
@@ -62,6 +70,9 @@ public class PoopCraft
     proxy.registerHandler(new ClientEventHandler());
     
     tab = new PoopCraftTab();
+    
+    // todo: make more elegant
+    ((BlockFluidBase) PoopFluids.METHANE.getBlock()).render();
   }
   
   @Mod.EventHandler
@@ -83,6 +94,7 @@ public class PoopCraft
   {
     private static ItemRegistry itemRegistry;
     private static BlockRegistry blockRegistry;
+    private static FluidRegistry fluidRegistry;
     
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
@@ -106,6 +118,14 @@ public class PoopCraft
       PoopBlocks.register(blockRegistry);
       
       blockRegistry.registerAll(event.getRegistry());
+     
+      logger.info("Registering fluids");
+      
+      fluidRegistry = new FluidRegistry();
+  
+      PoopFluids.register(fluidRegistry);
+      
+      fluidRegistry.registerAll(event.getRegistry());
     }
     
     @SubscribeEvent
