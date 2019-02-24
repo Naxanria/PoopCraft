@@ -3,6 +3,7 @@ package com.naxanria.poopcraft.tile;
 import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.Settings;
 import com.naxanria.poopcraft.blocks.BlockComposter;
+import com.naxanria.poopcraft.init.PoopFluids;
 import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.tile.base.TileEntityTickingBase;
 import com.naxanria.poopcraft.tile.base.inventory.ItemStackHandlerBase;
@@ -14,18 +15,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
-public class TileComposter extends TileEntityTickingBase
+public class TileComposter extends TileEntityTickingBase implements IFluidHandler
 {
   private ItemStackHandlerBase poopStorage = new ItemStackHandlerBase(Settings.COMPOSTER.poopStorage).setSlotValidator(this::isItemPoop);
   private ItemStackHandlerBase compostStorage = new ItemStackHandlerBase(Settings.COMPOSTER.compostStorage).setExtractOnly();
-  
-  private int methaneStored = 0;
-  private int methaneCapacity = Settings.COMPOSTER.methaneStorage;
+  private FluidTank methaneTank = new FluidTank(new FluidStack(PoopFluids.METHANE, 0), Settings.COMPOSTER.methaneStorage);
   
   private ItemStack converting;
   private PoopCapabilities capabilities;
@@ -80,14 +85,10 @@ public class TileComposter extends TileEntityTickingBase
         //PoopCraft.logger.info("converting... " + convertTime + " " + StackUtil.getItemId(converting) + " | " + compostTotal + "|" + methaneStored);
   
         compostTotal += capabilities.compostAmount;
-        methaneStored += capabilities.methaneAmount;
-  
-        if (methaneStored >= methaneCapacity)
-        {
-          
-          methaneStored = methaneCapacity / 2;
-        }
-      } else
+        
+        methaneTank.fill(new FluidStack(PoopFluids.METHANE, capabilities.methaneAmount), true);
+      }
+      else
       {
         converting = null;
         capabilities = null;
@@ -163,7 +164,7 @@ public class TileComposter extends TileEntityTickingBase
   
   private boolean hasSpace()
   {
-    if (methaneStored < methaneCapacity)
+    if (methaneTank.getFluidAmount() != methaneTank.getCapacity())
     {
       for (int i = 0; i < compostStorage.getSlots(); i++)
       {
@@ -263,7 +264,15 @@ public class TileComposter extends TileEntityTickingBase
   {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
     {
-      if (facing == EnumFacing.UP || FacingHelper.getLeft(getCurrentFacing()) == facing)
+      if (facing == EnumFacing.UP || getCurrentFacing().getOpposite() == facing)
+      {
+        return true;
+      }
+    }
+    
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    {
+      if (facing == getCurrentFacing())
       {
         return true;
       }
@@ -288,14 +297,59 @@ public class TileComposter extends TileEntityTickingBase
       }
     }
     
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == getCurrentFacing())
+    {
+      return (T) this;
+    }
+    
     return super.getCapability(capability, facing);
   }
+  
+  @Override
+  public IFluidTankProperties[] getTankProperties()
+  {
+    return methaneTank.getTankProperties();
+  }
+  
+  @Override
+  public int fill(FluidStack resource, boolean doFill)
+  {
+    return 0;
+  }
+  
+  @Nullable
+  @Override
+  public FluidStack drain(FluidStack resource, boolean doDrain)
+  {
+    if (resource.getFluid() != PoopFluids.METHANE)
+    {
+      return null;
+    }
+    
+    int maxDrain = Math.min(resource.amount, methaneTank.getFluidAmount());
+    
+//    if (doDrain)
+//    {
+//      methaneTank.drainInternal(maxDrain, true);
+//    }
+    
+    return methaneTank.drainInternal(maxDrain, doDrain);// new FluidStack(PoopFluids.METHANE, maxDrain);
+  }
+  
+  @Nullable
+  @Override
+  public FluidStack drain(int maxDrain, boolean doDrain)
+  {
+    return drain(new FluidStack(PoopFluids.METHANE, maxDrain), doDrain);
+  }
+  
   
   @Override
   public void writeSyncableNBT(NBTTagCompound compound)
   {
     compound.setTag("PoopStorage", poopStorage.serializeNBT());
     compound.setTag("CompostStorage", compostStorage.serializeNBT());
+    compound.setTag("MethaneTank", methaneTank.writeToNBT(new NBTTagCompound()));
     
     if (converting != null)
     {
@@ -305,7 +359,6 @@ public class TileComposter extends TileEntityTickingBase
       compound.setTag("Converting", convertingTag);
     }
     
-    compound.setInteger("MethaneStored", methaneStored);
     compound.setInteger("ConvertTime", convertTime);
     compound.setInteger("ConvertTotalTime", convertTotalTime);
     compound.setInteger("CompostTotal", compostTotal);
@@ -318,6 +371,7 @@ public class TileComposter extends TileEntityTickingBase
   {
     poopStorage.deserializeNBT(compound.getCompoundTag("PoopStorage"));
     compostStorage.deserializeNBT(compound.getCompoundTag("CompostStorage"));
+    methaneTank.readFromNBT(compound.getCompoundTag("MethaneTank"));
     
     if (compound.hasKey("Converting"))
     {
@@ -329,7 +383,6 @@ public class TileComposter extends TileEntityTickingBase
       converting.deserializeNBT(compound.getCompoundTag("Converting"));
     }
     
-    methaneStored = compound.getInteger("MethaneStored");
     convertTime = compound.getInteger("ConvertTime");
     convertTotalTime = compound.getInteger("ConvertTotalTime");
     compostTotal = compound.getInteger("CompostTotal");
