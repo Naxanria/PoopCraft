@@ -77,6 +77,16 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
         }
       }
     }
+    
+    // fix for when starting world, capabilities isnt loaded.
+    if (capabilities == null && converting != null)
+    {
+      capabilities = SettingsHelper.getPoopCapabilities(converting);
+      if (capabilities == null)
+      {
+        converting = null;
+      }
+    }
   
     if (converting != null)
     {

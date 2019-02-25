@@ -188,6 +188,16 @@ public class EnergyStorageBase implements IEnergyStorage, ISerializable
     this.maxReceive = maxReceive;
   }
   
+  public int getMaxDrain()
+  {
+    return maxDrain;
+  }
+  
+  public int getMaxReceive()
+  {
+    return maxReceive;
+  }
+  
   public boolean isFull()
   {
     return stored == capacity;

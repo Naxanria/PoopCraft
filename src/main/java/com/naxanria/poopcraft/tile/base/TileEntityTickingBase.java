@@ -13,7 +13,7 @@ public abstract class TileEntityTickingBase extends TileEntityBase implements IT
   }
   
   @Override
-  public void update()
+  public final void update()
   {
     ticks++;
     
