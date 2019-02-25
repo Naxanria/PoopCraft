@@ -53,7 +53,7 @@ public class TileTurbine extends TileEntityTickingBase implements IFluidHandler
   
           methaneTank.drainInternal(Settings.TURBINE.methaneAmount, true);
   
-          PoopCraft.logger.info("Started a burn cycle");
+//          PoopCraft.logger.info("Started a burn cycle");
   
           dirty = true;
         }
@@ -64,11 +64,11 @@ public class TileTurbine extends TileEntityTickingBase implements IFluidHandler
     {
       if (burnTime++ <= totalTime)
       {
-        PoopCraft.logger.info("Producing " + burnTime + "/" + totalTime);
+//        PoopCraft.logger.info("Producing " + burnTime + "/" + totalTime);
         
         storage.receiveInternal(Settings.TURBINE.generatePerTick);
         
-        PoopCraft.logger.info("Stored: " + storage.getEnergyStored());
+//        PoopCraft.logger.info("Stored: " + storage.getEnergyStored());
         dirty = true;
       }
       else
