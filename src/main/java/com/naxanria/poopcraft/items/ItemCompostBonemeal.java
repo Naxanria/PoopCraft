@@ -1,6 +1,5 @@
 package com.naxanria.poopcraft.items;
 
-import com.naxanria.poopcraft.items.base.ItemBase;
 import com.naxanria.poopcraft.util.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,16 +9,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemCompost extends ItemBase
+public class ItemCompostBonemeal extends ItemCompost
 {
-  public ItemCompost()
+  public ItemCompostBonemeal()
   {
-    super("compost");
-  }
-  
-  protected ItemCompost(String name)
-  {
-    super(name);
+    super("compost_bonemeal");
   }
   
   @Override
@@ -31,17 +25,32 @@ public class ItemCompost extends ItemBase
     {
       return EnumActionResult.FAIL;
     }
+  
     
-    if (WorldUtil.applyBoneMeal(stack, world, pos, player, hand))
+    boolean applied = false;
+    for (int x = -1; x <= 1 ; x++)
     {
-      // send event, bonemeal event? - is what bonemeal uses
-      world.playEvent(2005, pos, 0);
-      
+      for (int z = -1; z <= 1; z++)
+      {
+        BlockPos target = pos.add(x, 0, z);
+        
+        boolean curr = WorldUtil.applyBoneMeal(stack, world, target, player, hand);
+        applied |= curr;
+        
+        if (curr)
+        {
+          // send event, bonemeal event? - is what bonemeal uses
+          world.playEvent(2005, target, 0);
+        }
+      }
+    }
+    
+    if (applied)
+    {
       stack.shrink(1);
-      
       return EnumActionResult.SUCCESS;
     }
     
-    return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+    return EnumActionResult.PASS;
   }
 }
