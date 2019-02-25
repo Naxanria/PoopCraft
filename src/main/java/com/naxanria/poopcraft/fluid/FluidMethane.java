@@ -11,6 +11,12 @@ public class FluidMethane extends FluidBase
       "fluid_methane",
       "methane"
     );
+    
+    density = -1;
+    temperature = KELVIN + 30;
+    
+    viscosity = 800;
+    
+    isGaseous = true;
   }
-  
 }

@@ -10,6 +10,8 @@ import net.minecraftforge.fluids.FluidUtil;
 
 public class FluidBase extends Fluid
 {
+  public static final int KELVIN = 270;
+  
   public final String name;
   
   public FluidBase(String fluidName, String texture)
