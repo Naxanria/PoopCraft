@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "poopcraft:composter",
+  "result":
+  {
+    "item": "composter"
+  },
+  "pattern":
+  [
+    "ICI",
+    "C c",
+    "III"
+  ],
+  "key":
+  {
+    "I": {"type": "forge:ore_dict", "ore": "ingotIron"},
+    "C": {"type": "forge:ore_dict", "ore": "chest"},
+    "c": {"item": "minecraft:cauldron"}
+  }
+}

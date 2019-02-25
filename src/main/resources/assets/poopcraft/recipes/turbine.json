@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "poopcraft:turbine",
+  "result":
+  {
+    "item": "poopcraft:turbine"
+  },
+  "pattern":
+  [
+    "III",
+    "Rcc",
+    "I I"
+  ],
+  "key":
+  {
+    "I": { "type": "forge:ore_dict", "ore": "ingotIron"},
+    "R": { "item": "minecraft:redstone_block"},
+    "c": { "item": "minecraft:cauldron"}
+  }
+}

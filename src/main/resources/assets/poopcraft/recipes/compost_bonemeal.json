@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "poopcraft:compost_bonemeal",
+  "result":
+  {
+    "item": "compost_bonemeal"
+  },
+  "pattern":
+  [
+    " B ",
+    "BCB",
+    " B "
+  ],
+  "key":
+  {
+    "B" : {"item": "minecraft:dye", "data": 15},
+    "C" : {"item": "poopcraft:compost"}
+  }
+}
