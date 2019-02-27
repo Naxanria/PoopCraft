@@ -1,5 +1,6 @@
 package com.naxanria.poopcraft;
 
+import com.naxanria.poopcraft.command.CommandPoopCraft;
 import com.naxanria.poopcraft.fluid.base.BlockFluidBase;
 import com.naxanria.poopcraft.handler.ClientEventHandler;
 import com.naxanria.poopcraft.handler.EventHandler;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
@@ -87,6 +89,12 @@ public class PoopCraft
   public void postInit(FMLPostInitializationEvent event)
   {
     logger.info("Post");
+  }
+  
+  @Mod.EventHandler
+  public static void onServerStarting(FMLServerStartingEvent event)
+  {
+    event.registerServerCommand(new CommandPoopCraft());
   }
   
   @Mod.EventBusSubscriber

@@ -3,6 +3,7 @@ package com.naxanria.poopcraft.tile;
 import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.Settings;
 import com.naxanria.poopcraft.blocks.BlockComposter;
+import com.naxanria.poopcraft.data.ItemPoopCapabilities;
 import com.naxanria.poopcraft.init.PoopFluids;
 import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.tile.base.TileEntityTickingBase;
@@ -15,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -33,7 +33,7 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
   private FluidTank methaneTank = new FluidTank(new FluidStack(PoopFluids.METHANE, 0), Settings.COMPOSTER.methaneStorage);
   
   private ItemStack converting;
-  private PoopCapabilities capabilities;
+  private ItemPoopCapabilities capabilities;
   
   private int convertTime = 0;
   private int convertTotalTime = 100;
@@ -58,7 +58,7 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
   
         if (converting != null)
         {
-          capabilities = SettingsHelper.getPoopCapabilities(converting);
+          capabilities = ItemPoopCapabilities.get(converting);
   
           if (capabilities == null)
           {
@@ -71,7 +71,7 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
           }
           else
           {
-            convertTotalTime = capabilities.compostSpeed;
+            convertTotalTime = capabilities.compostTime;
             convertTime = 0;
           }
         }
@@ -81,7 +81,7 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
     // fix for when starting world, capabilities isnt loaded.
     if (capabilities == null && converting != null)
     {
-      capabilities = SettingsHelper.getPoopCapabilities(converting);
+      capabilities = ItemPoopCapabilities.get(converting);
       if (capabilities == null)
       {
         converting = null;
@@ -92,8 +92,6 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
     {
       if (convertTime++ < convertTotalTime)
       {
-        //PoopCraft.logger.info("converting... " + convertTime + " " + StackUtil.getItemId(converting) + " | " + compostTotal + "|" + methaneStored);
-  
         compostTotal += capabilities.compostAmount;
         
         methaneTank.fill(new FluidStack(PoopFluids.METHANE, capabilities.methaneAmount), true);
@@ -136,8 +134,6 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
         IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, compostFacing.getOpposite());
         if (handler != null)
         {
-//          PoopCraft.logger.info(compostFacing.toString() + " " + compostFacing.getOpposite().toString() + " " + te.getClass().getCanonicalName());
-        
           int total = 0;
           int max = Settings.COMPOSTER.autoOutputAmount;
         
@@ -151,8 +147,6 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
             }
           
             int amount = Math.min(Math.max(max, total - max), stack.getCount());
-            
-//            PoopCraft.logger.info("Amount to transfer: " + amount);
           
             ItemStack insert = stack.copy();
             insert.setCount(amount);
@@ -218,12 +212,9 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
   
   public ItemStack getNextToConverting()
   {
-//    PoopCraft.logger.info("Trying to get next for converting");
     for (int i = 0; i < poopStorage.getSlots(); i++)
     {
       ItemStack stack = poopStorage.getStackInSlot(i);
-      
-//      PoopCraft.logger.info("Checking for slot=" + i + ";item=" + StackUtil.getItemId(stack));
       
       if (stack.isEmpty() || stack.getItem() == Items.AIR)
       {
@@ -235,8 +226,6 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
       ItemStack convertingStack = stack.copy();
       convertingStack.setCount(1);
       
-//      PoopCraft.logger.info("Trying to convert " + StackUtil.getItemId(convertingStack));
-      
       return convertingStack;
     }
     
@@ -247,11 +236,11 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
   {
     PoopCraft.logger.info("Checking for: " + StackUtil.getItemId(stack));
     
-    PoopCapabilities capabilities = SettingsHelper.getPoopCapabilities(stack);
+    ItemPoopCapabilities capabilities = ItemPoopCapabilities.get(stack);
     
     PoopCraft.logger.info(capabilities);
     
-    return SettingsHelper.hasPoopCapabilities(stack);
+    return ItemPoopCapabilities.hasCapabilities(stack);
   }
   
   private EnumFacing getCurrentFacing()

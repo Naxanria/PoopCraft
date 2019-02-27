@@ -3,7 +3,9 @@ package com.naxanria.poopcraft.util;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -68,6 +70,32 @@ public class WorldUtil
     }
     
     return false;
+  }
+  
+  public static void dropItemInWorld(World world, BlockPos pos, Item item)
+  {
+    dropItemInWorld(world, pos, new ItemStack(item));
+  }
+  
+  public static void dropItemInWorld(World world, BlockPos pos, Item item, int amount)
+  {
+    dropItemInWorld(world, pos, new ItemStack(item, amount));
+  }
+  
+  public static void dropItemInWorld(World world, BlockPos pos, Block block)
+  {
+    dropItemInWorld(world, pos, new ItemStack(block));
+  }
+  
+  public static void dropItemInWorld(World world, BlockPos pos, Block block, int amount)
+  {
+    dropItemInWorld(world, pos, new ItemStack(block, amount));
+  }
+  
+  public static void dropItemInWorld(World world, BlockPos pos, ItemStack stack)
+  {
+    EntityItem toDrop = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+    world.spawnEntity(toDrop);
   }
   
 }

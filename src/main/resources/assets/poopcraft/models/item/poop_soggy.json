@@ -2,6 +2,6 @@
   "parent": "item/generated",
   "textures":
   {
-    "layer0": "poopcraft:items/poop"
+    "layer0": "poopcraft:items/poop/poop_soggy"
   }
 }

@@ -2,11 +2,9 @@ package com.naxanria.poopcraft.blocks;
 
 import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.blocks.base.BlockTileFacingBase;
-import com.naxanria.poopcraft.init.PoopItems;
 import com.naxanria.poopcraft.tile.TileComposter;
 import com.naxanria.poopcraft.tile.base.inventory.ItemStackHandlerBase;
 import com.naxanria.poopcraft.util.ItemHandlerHelper;
-import com.naxanria.poopcraft.util.SettingsHelper;
 import com.naxanria.poopcraft.util.StackUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -58,12 +56,8 @@ public class BlockComposter extends BlockTileFacingBase<TileComposter>
   
         if (handlerBase != null)
         {
-          PoopCraft.logger.info("Trying to insert: " + StackUtil.getItemId(stack) + " " + stack.getCount() + " has caps: " + SettingsHelper.hasPoopCapabilities(stack));
-          
           ItemStack remainder = ItemHandlerHelper.insert(handlerBase, stack);
           stack.setCount(remainder.getCount());
-  
-          PoopCraft.logger.info("Remainder : " + StackUtil.getItemId(stack) + " " + stack.getCount());
         }
       }
     }

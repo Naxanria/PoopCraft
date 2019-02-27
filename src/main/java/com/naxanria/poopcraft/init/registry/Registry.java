@@ -1,5 +1,6 @@
 package com.naxanria.poopcraft.init.registry;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Registry<TItem, TRegistry>
 {
@@ -18,6 +19,13 @@ public abstract class Registry<TItem, TRegistry>
     {
       add(item);
     }
+    
+    return this;
+  }
+  
+  public Registry<TItem, TRegistry> addAll(List<TItem> items)
+  {
+    toRegister.addAll(items);
     
     return this;
   }

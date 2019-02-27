@@ -1,9 +1,7 @@
 package com.naxanria.poopcraft.handler;
 
-import com.naxanria.poopcraft.Settings;
 import com.naxanria.poopcraft.util.PlayerUtil;
-import com.naxanria.poopcraft.util.PoopCapabilities;
-import com.naxanria.poopcraft.util.SettingsHelper;
+import com.naxanria.poopcraft.data.ItemPoopCapabilities;
 import com.naxanria.poopcraft.util.StackUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,12 +34,12 @@ public class ClientEventHandler
       event.getToolTip().add(TextFormatting.GREEN + id);
     }
   
-    PoopCapabilities capabilities = SettingsHelper.getPoopCapabilities(stack);
+    ItemPoopCapabilities capabilities = ItemPoopCapabilities.get(stack);
     if (capabilities != null)
     {
-      event.getToolTip().add(CAPABILITIES_PREFIX + "Compost: " + capabilities.compostAmount);
-      event.getToolTip().add(CAPABILITIES_PREFIX + "Methane: " + capabilities.methaneAmount);
-      event.getToolTip().add(CAPABILITIES_PREFIX + "   Speed: " + capabilities.compostSpeed);
+      event.getToolTip().add(CAPABILITIES_PREFIX + "Compost: " + capabilities.compostAmount * capabilities.compostTime);
+      event.getToolTip().add(CAPABILITIES_PREFIX + "Methane: " + capabilities.methaneAmount * capabilities.compostTime);
+      event.getToolTip().add(CAPABILITIES_PREFIX + "     Time: " + capabilities.compostTime);
     }
     
     EntityPlayer player = PlayerUtil.getLocalPlayer();

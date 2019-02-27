@@ -67,7 +67,7 @@ public class TileToilet extends TileEntityTickingBase
       for (EntityItem ei :
         found)
       {
-        if (ei.getItem().getItem() == PoopItems.POOP.getItem())
+        if (ei.getItem().getItem() == PoopItems.POOPS.POOP_HUMAN.getItem())
         {
           ItemStack stack = ei.getItem();
           
