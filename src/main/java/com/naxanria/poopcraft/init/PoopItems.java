@@ -18,6 +18,7 @@ public class PoopItems
     // passives
     public static final ItemPoop POOP_CHICKEN = new ItemPoop("poop_chicken", 4, 2, 15);
     
+    public static final ItemPoop POOP_DEFAULT = new ItemPoop("poop_default", 3, 3, 30);
   }
   
   public static final ItemCompost COMPOST = new ItemCompost();
@@ -33,6 +34,8 @@ public class PoopItems
       POOPS.POOP_ZOMBIE,
       
       POOPS.POOP_CHICKEN,
+      
+      POOPS.POOP_DEFAULT,
       
       COMPOST,
       COMPOST_BONEMEAL
