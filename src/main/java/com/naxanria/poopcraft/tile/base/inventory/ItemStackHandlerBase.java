@@ -106,7 +106,7 @@ public class ItemStackHandlerBase extends ItemStackHandler
   @Override
   public boolean isItemValid(int slot, @Nonnull ItemStack stack)
   {
-    PoopCraft.logger.info("Checking for slot " + slot + " for stack: " + StackUtil.getItemId(stack));
+//    PoopCraft.logger.info("Checking for slot " + slot + " for stack: " + StackUtil.getItemId(stack));
     return slotValidator == null ? super.isItemValid(slot, stack) : slotValidator.isItemValid(slot, stack);
   }
   
@@ -127,7 +127,7 @@ public class ItemStackHandlerBase extends ItemStackHandler
   @Override
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
   {
-    if (!canInsert)
+    if (!canInsert || !isItemValid(slot, stack))
     {
       return stack;
     }

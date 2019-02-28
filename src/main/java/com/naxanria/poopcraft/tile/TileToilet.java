@@ -2,100 +2,91 @@ package com.naxanria.poopcraft.tile;
 
 import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.init.PoopItems;
-import com.naxanria.poopcraft.tile.base.energy.EnergyStorageBase;
 import com.naxanria.poopcraft.tile.base.TileEntityTickingBase;
-import net.minecraft.entity.item.EntityItem;
+import com.naxanria.poopcraft.tile.base.inventory.ItemStackHandlerBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
 public class TileToilet extends TileEntityTickingBase
 {
-  private EnergyStorageBase storage;
+  private ItemStackHandlerBase input = new ItemStackHandlerBase(1).setSlotValidator(this::validateSlot).setInsertOnly();
+  private ItemStackHandlerBase output = new ItemStackHandlerBase(1).setExtractOnly();
   
-  private AxisAlignedBB checkBox;
-  
-  private int generate = 45;
-  private int time = 200;
-  private int currentTime = 0;
-  private boolean generating = false;
-  private int lastCheck = 0;
-  private int checkCooldown = 20;
-  
-  public TileToilet()
-  {
-    storage = new EnergyStorageBase(9001, 9001, 0);
-  }
+  //todo: use water for soggy poop.
   
   @Override
   protected void entityUpdate()
   {
-    boolean mark = false;
-    
-    if (generating)
+    if (!(getTicks() % 5 == 0))
     {
-      if (currentTime++ >= time)
-      {
-        generating = false;
-      }
-      
-      if (generating)
-      {
-        storage.receiveInternal(generate);
-        if (currentTime == 5)
-        {
-          // OVER 9000
-          storage.receiveInternal(1);
-        }
-      }
-  
-      mark = true;
-    }
-    if (!generating && --lastCheck <= 0 && !storage.isFull())
-    {
-      lastCheck = checkCooldown;
-      
-      if (checkBox == null)
-      {
-        checkBox = new AxisAlignedBB(pos);
-      }
-      
-      List<EntityItem> found = world.getEntitiesWithinAABB(EntityItem.class, checkBox);
-      boolean startGeneration = false;
-  
-      for (EntityItem ei :
-        found)
-      {
-        if (ei.getItem().getItem() == PoopItems.POOPS.POOP_HUMAN.getItem())
-        {
-          ItemStack stack = ei.getItem();
-          
-          stack.setCount(stack.getCount() - 1);
-          
-          startGeneration = true;
-          
-          break;
-        }
-      }
-      
-      if (startGeneration)
-      {
-        generating = true;
-        currentTime = 0;
-        mark = true;
-      }
+      return;
     }
     
-    if (mark && !world.isRemote)
+    ItemStack inputStack = input.getStackInSlot(0);
+    if (inputStack.getCount() > 0)
     {
-      markDirty();
+      ItemStack outputStack = output.getStackInSlot(0);
+      
+      if (outputStack.getCount() < 64)
+      {
+        int amount = Math.min(inputStack.getCount(), 64 - outputStack.getCount());
+        
+        if (outputStack.isEmpty() || outputStack.getItem() != PoopItems.POOPS.POOP_SOGGY)
+        {
+          output.setStackInSlot(0, new ItemStack(PoopItems.POOPS.POOP_SOGGY, amount));
+        }
+        else
+        {
+          outputStack.grow(amount);
+        }
+        
+        inputStack.shrink(amount);
+        
+        if (!world.isRemote)
+        {
+          markDirty();
+        }
+      }
     }
   }
   
-  @Override
-  public int getComparatorStrength()
+  private boolean validateSlot(int slot, ItemStack stack)
   {
-    return storage.getAsComparatorStrength();
+    return stack.getItem() == PoopItems.POOPS.POOP_HUMAN;
+  }
+  
+  @Override
+  public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+  {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+    {
+      return  (facing == EnumFacing.UP || facing == EnumFacing.DOWN);
+    }
+    
+    return super.hasCapability(capability, facing);
+  }
+  
+  @Nullable
+  @Override
+  public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+  {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+    {
+      if (facing == EnumFacing.UP)
+      {
+        return (T) input;
+      }
+      
+      if (facing == EnumFacing.DOWN)
+      {
+        return (T) output;
+      }
+    }
+    
+    return super.getCapability(capability, facing);
   }
 }

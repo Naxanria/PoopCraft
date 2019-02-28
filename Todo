@@ -1,3 +1,7 @@
+Localization
+Make players poop
+
+-- Less important, for later --
 Create poop for:
      minecraft:elder_guardian
      minecraft:wither_skeleton
@@ -37,15 +41,11 @@ Create poop for:
      minecraft:parrot
      minecraft:villager
 
-Make dragon poop.
-
-Toilet converts poop_human to poop_soggy
-make players poop
-
-Localization
-
--- Less important, for later --
-- Make ItemPoop float
+- Make dragon poop.
+- Make toilet be a mountable object so players can sit on it
+- Make toilet need to use water (Also change model to represent that)
+- Better textures
+- Make ItemPoop float in water
 - have fecal matter (UU matter thing)
 - Make diaper armour; portable toilet... of some kind
 - Bidet upgrade for toilet
