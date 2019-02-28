@@ -20,7 +20,7 @@ public class BlockBase extends Block implements IBlockBase
     
     this.name = name;
     
-    setUnlocalizedName(name);
+    setUnlocalizedName(PoopCraft.MODID + "." + name);
     setRegistryName(name);
     
     setCreativeTab(PoopCraft.tab);

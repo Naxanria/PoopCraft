@@ -1,5 +1,6 @@
 package com.naxanria.poopcraft.handler;
 
+import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.util.PlayerUtil;
 import com.naxanria.poopcraft.data.ItemPoopCapabilities;
 import com.naxanria.poopcraft.util.StackUtil;
@@ -15,7 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClientEventHandler
 {
-  public static final String CAPABILITIES_PREFIX = "   " + TextFormatting.DARK_GRAY;
+  public static final String CAPABILITIES_PREFIX = TextFormatting.DARK_GRAY.toString();
+  
+  public static final String TOOLTIP_METHANE = "tooltip.poopcraft.methane";
+  public static final String TOOLTIP_COMPOST = "tooltip.poopcraft.compost";
+  public static final String TOOLTIP_TIME = "tooltip.poopcraft.time";
   
   @SubscribeEvent
   public void onTooltipEvent(ItemTooltipEvent event)
@@ -37,9 +42,9 @@ public class ClientEventHandler
     ItemPoopCapabilities capabilities = ItemPoopCapabilities.get(stack);
     if (capabilities != null)
     {
-      event.getToolTip().add(CAPABILITIES_PREFIX + "Compost: " + capabilities.compostAmount * capabilities.compostTime);
-      event.getToolTip().add(CAPABILITIES_PREFIX + "Methane: " + capabilities.methaneAmount * capabilities.compostTime);
-      event.getToolTip().add(CAPABILITIES_PREFIX + "     Time: " + capabilities.compostTime);
+      event.getToolTip().add(CAPABILITIES_PREFIX + PoopCraft.proxy.localized(TOOLTIP_COMPOST) + ": " + capabilities.compostAmount * capabilities.compostTime);
+      event.getToolTip().add(CAPABILITIES_PREFIX + PoopCraft.proxy.localized(TOOLTIP_METHANE) + ": " + capabilities.methaneAmount * capabilities.compostTime);
+      event.getToolTip().add(CAPABILITIES_PREFIX + PoopCraft.proxy.localized(TOOLTIP_TIME) + ": " + capabilities.compostTime);
     }
     
     EntityPlayer player = PlayerUtil.getLocalPlayer();

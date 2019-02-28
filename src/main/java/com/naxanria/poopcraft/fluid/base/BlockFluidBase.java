@@ -1,5 +1,6 @@
 package com.naxanria.poopcraft.fluid.base;
 
+import com.naxanria.poopcraft.PoopCraft;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -20,7 +21,7 @@ public class BlockFluidBase extends BlockFluidClassic
   {
     super(fluid, material, mapColor);
     
-    setUnlocalizedName(name);
+    setUnlocalizedName(PoopCraft.MODID + "." + name);
     setRegistryName(name);
     
     displacements.put(this, false);

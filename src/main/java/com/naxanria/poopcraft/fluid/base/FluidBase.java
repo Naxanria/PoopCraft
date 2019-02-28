@@ -30,6 +30,8 @@ public class FluidBase extends Fluid
     
     name = fluidName;
     
+    setUnlocalizedName(PoopCraft.MODID + "." + fluidName);
+    
     FluidRegistry.registerFluid(this);
     FluidRegistry.addBucketForFluid(this);
   }

@@ -11,6 +11,10 @@ public abstract class CommonProxy
   
   public abstract void registerItemRender(Item item, int meta, String id);
   
+  public String localized(String key)
+  {
+    return key;
+  }
   
   public void registerHandler(Object obj)
   {
