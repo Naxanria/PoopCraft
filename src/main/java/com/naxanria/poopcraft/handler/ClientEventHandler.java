@@ -1,6 +1,7 @@
 package com.naxanria.poopcraft.handler;
 
 import com.naxanria.poopcraft.PoopCraft;
+import com.naxanria.poopcraft.Settings;
 import com.naxanria.poopcraft.util.PlayerUtil;
 import com.naxanria.poopcraft.data.ItemPoopCapabilities;
 import com.naxanria.poopcraft.util.StackUtil;
@@ -34,7 +35,7 @@ public class ClientEventHandler
     
     String id = StackUtil.getItemId(stack);
     
-    if (GuiScreen.isShiftKeyDown())
+    if (Settings.debug && GuiScreen.isShiftKeyDown())
     {
       event.getToolTip().add(TextFormatting.GREEN + id);
     }

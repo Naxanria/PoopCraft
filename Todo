@@ -1,7 +1,9 @@
+Config
 Make players poop
 
 -- Less important, for later --
-Create poop for:
+- JSON for poop and entities that can poop
+- Create poop for:
      minecraft:elder_guardian
      minecraft:wither_skeleton
      minecraft:stray

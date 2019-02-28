@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EventHandler
@@ -14,9 +15,6 @@ public class EventHandler
   @SubscribeEvent
   public void onEntityJoinWorld(EntityJoinWorldEvent event)
   {
-    
-    //PoopCraft.logger.info(EntityList.getEntityString(event.getEntity()));
-    
     if (event.getWorld().isRemote)
     {
       return;
@@ -25,16 +23,7 @@ public class EventHandler
     if (event.getEntity() instanceof EntityCreature)
     {
       EntityCreature entity = (EntityCreature) event.getEntity();
-      
-      ResourceLocation key = EntityList.getKey(entity);
-      
-      if (key != null)
-      {
-        //PoopCraft.logger.info(key.getResourceDomain() + ":" + key.getResourcePath());
-        
-      }
-      
-      
+
       if (EntityPoopCapabilities.hasCapability(entity))
       {
         EntityPoopCapabilities poopCapabilities = EntityPoopCapabilities.getCapability(entity);
@@ -44,6 +33,16 @@ public class EventHandler
       
         entity.tasks.addTask(0, poopAI);
       }
+    }
+  }
+  
+  @SubscribeEvent
+  public void onConfigChanged(ConfigChangedEvent event)
+  {
+    if (event.getModID().equals(PoopCraft.MODID))
+    {
+      ConfigHandler.config.save();
+      ConfigHandler.init();
     }
   }
 }

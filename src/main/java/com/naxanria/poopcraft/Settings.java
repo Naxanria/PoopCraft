@@ -1,17 +1,12 @@
 package com.naxanria.poopcraft;
 
-import com.naxanria.poopcraft.data.EntityPoopCapabilities;
-import com.naxanria.poopcraft.data.ItemPoopCapabilities;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Settings
 {
+  public static boolean debug = false;
+  public static boolean makeNonMinecraftCreaturesPoop = true;
+  
   public static class TURBINE
   {
     public static int generatePerTick = 300;

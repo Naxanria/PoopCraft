@@ -5,6 +5,7 @@ import com.naxanria.poopcraft.data.EntityPoopCapabilities;
 import com.naxanria.poopcraft.data.ItemPoopCapabilities;
 import com.naxanria.poopcraft.fluid.base.BlockFluidBase;
 import com.naxanria.poopcraft.handler.ClientEventHandler;
+import com.naxanria.poopcraft.handler.ConfigHandler;
 import com.naxanria.poopcraft.handler.EventHandler;
 import com.naxanria.poopcraft.init.PoopBlocks;
 import com.naxanria.poopcraft.init.PoopFluids;
@@ -19,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -29,13 +31,15 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.util.Set;
 
 @Mod
 (
   modid = PoopCraft.MODID,
   name = PoopCraft.NAME,
-  version = PoopCraft.VERSION
+  version = PoopCraft.VERSION,
+  guiFactory = PoopCraft.PACKAGE + ".gui.ModGuiFactory"
 )
 public class PoopCraft
 {
@@ -45,7 +49,7 @@ public class PoopCraft
   }
   
   public static final String MODID = "poopcraft";
-  public static final String NAME = "PoopCraft";
+  public static final String NAME = "Poop Craft";
   public static final String VERSION = "${version}";
   
   public static final String PACKAGE = "com.naxanria." + MODID;
@@ -65,9 +69,13 @@ public class PoopCraft
   public void preInit(FMLPreInitializationEvent event)
   {
     logger = event.getModLog();
-    
     logger.info("PreInit");
   
+    File configFile = new File(event.getSuggestedConfigurationFile().getParent(), MODID + "/" + MODID + ".cfg");
+  
+    ConfigHandler.config = new Configuration(configFile);
+    ConfigHandler.init();
+    
     PacketHandler.init();
     
     proxy.registerHandler(new EventHandler());

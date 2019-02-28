@@ -1,7 +1,7 @@
 [
 {
   "modid": "poopcraft",
-  "name": "Poopcraft",
+  "name": "Poop Craft",
   "description": "Everybody poops, nobody shits.",
   "version": "${version}",
   "mcversion": "${mcversion}",

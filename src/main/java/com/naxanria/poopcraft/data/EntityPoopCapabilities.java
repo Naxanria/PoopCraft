@@ -2,6 +2,7 @@ package com.naxanria.poopcraft.data;
 
 import com.google.common.reflect.Reflection;
 import com.naxanria.poopcraft.PoopCraft;
+import com.naxanria.poopcraft.Settings;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.*;
@@ -53,6 +54,11 @@ public class EntityPoopCapabilities
     
     for(ResourceLocation location: EntityList.getEntityNameList())
     {
+      if (!Settings.makeNonMinecraftCreaturesPoop && !location.getResourceDomain().equals("minecraft"))
+      {
+        continue;
+      }
+      
       String id = location.getResourceDomain() + ":" + location.getResourcePath();
       
       if (!hasCapability(id))
