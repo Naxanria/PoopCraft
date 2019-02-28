@@ -1,6 +1,8 @@
 package com.naxanria.poopcraft;
 
 import com.naxanria.poopcraft.command.CommandPoopCraft;
+import com.naxanria.poopcraft.data.EntityPoopCapabilities;
+import com.naxanria.poopcraft.data.ItemPoopCapabilities;
 import com.naxanria.poopcraft.fluid.base.BlockFluidBase;
 import com.naxanria.poopcraft.handler.ClientEventHandler;
 import com.naxanria.poopcraft.handler.EventHandler;
@@ -81,14 +83,15 @@ public class PoopCraft
   public void init(FMLInitializationEvent event)
   {
     logger.info("Init");
-  
-    Settings.init();
   }
   
   @Mod.EventHandler
   public void postInit(FMLPostInitializationEvent event)
   {
     logger.info("Post");
+  
+    ItemPoopCapabilities.init();
+    EntityPoopCapabilities.init();
   }
   
   @Mod.EventHandler
@@ -122,26 +125,22 @@ public class PoopCraft
       logger.info("Registering blocks.");
       
       blockRegistry = new BlockRegistry();
-      
       PoopBlocks.register(blockRegistry);
-      
       blockRegistry.registerAll(event.getRegistry());
      
       logger.info("Registering fluids");
       
       fluidRegistry = new FluidRegistry();
-  
       PoopFluids.register(fluidRegistry);
-      
       fluidRegistry.registerAll(event.getRegistry());
     }
     
-    @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
-    {
-//      initRecipeClass();
-//      instance.recipeRegistry.registerAll(event.getRegistry());
-    }
+//    @SubscribeEvent
+//    public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
+//    {
+////      initRecipeClass();
+////      instance.recipeRegistry.registerAll(event.getRegistry());
+//    }
     
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event)

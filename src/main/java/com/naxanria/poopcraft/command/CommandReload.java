@@ -1,6 +1,5 @@
 package com.naxanria.poopcraft.command;
 
-import com.naxanria.poopcraft.Settings;
 import com.naxanria.poopcraft.data.EntityPoopCapabilities;
 import com.naxanria.poopcraft.data.ItemPoopCapabilities;
 import net.minecraft.command.CommandException;
@@ -25,7 +24,9 @@ public class CommandReload extends CommandPoopCraftBase
     ItemPoopCapabilities.reset();
     EntityPoopCapabilities.reset();
     
-    Settings.init();
+    ItemPoopCapabilities.init();
+    EntityPoopCapabilities.init();
+    
     sender.sendMessage(new TextComponentString("Reloading done in " + (System.currentTimeMillis() - start) + "ms"));
   }
 }

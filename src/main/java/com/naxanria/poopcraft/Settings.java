@@ -33,14 +33,4 @@ public class Settings
     
     public static int autoOutputAmount = 4;
   }
-  
-  
-  public static void init()
-  {
-    // todo: load in the poop data with json
-    ItemPoopCapabilities.init();
-    EntityPoopCapabilities.init();
-  }
-  
-  
 }
