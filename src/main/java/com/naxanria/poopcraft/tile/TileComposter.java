@@ -234,12 +234,6 @@ public class TileComposter extends TileEntityTickingBase implements IFluidHandle
   
   private boolean isItemPoop(int slot, ItemStack stack)
   {
-    PoopCraft.logger.info("Checking for: " + StackUtil.getItemId(stack));
-    
-    ItemPoopCapabilities capabilities = ItemPoopCapabilities.get(stack);
-    
-    PoopCraft.logger.info(capabilities);
-    
     return ItemPoopCapabilities.hasCapabilities(stack);
   }
   

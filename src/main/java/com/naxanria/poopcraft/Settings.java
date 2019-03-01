@@ -6,6 +6,7 @@ public class Settings
 {
   public static boolean debug = false;
   public static boolean makeNonMinecraftCreaturesPoop = true;
+  public static int playerPoopCooldown = 6000;
   
   public static class TURBINE
   {

@@ -1,5 +1,6 @@
 package com.naxanria.poopcraft;
 
+import com.naxanria.poopcraft.capability.PlayerPoopCapability;
 import com.naxanria.poopcraft.command.CommandPoopCraft;
 import com.naxanria.poopcraft.data.EntityPoopCapabilities;
 import com.naxanria.poopcraft.data.ItemPoopCapabilities;
@@ -91,6 +92,8 @@ public class PoopCraft
   public void init(FMLInitializationEvent event)
   {
     logger.info("Init");
+  
+    PlayerPoopCapability.register();
   }
   
   @Mod.EventHandler

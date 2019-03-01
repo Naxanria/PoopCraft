@@ -22,6 +22,8 @@ public class ConfigHandler
     
     config.load();
     
+    Settings.playerPoopCooldown = config.getInt("Player Poop Cooldown", GENERAL, 6000, 1000, 300000,
+    "The amount of ticks between the player can poop.");
     Settings.makeNonMinecraftCreaturesPoop = config.getBoolean("Non Minecraft Creatures Poop", GENERAL, true,
       "Adds the default poop to other mods entities.");
     Settings.debug = config.getBoolean("Debug", GENERAL, false,
