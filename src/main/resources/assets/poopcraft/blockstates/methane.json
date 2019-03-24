@@ -8,7 +8,7 @@
       "transform" : "forge:default-item",
       "custom" :
       {
-        "fluid" : "fluid_methane"
+        "fluid" : "methane"
       }
     }
   }

@@ -10,19 +10,13 @@ public class BlockTurbine extends BlockTileFacingBase<TileTurbine>
 {
   public BlockTurbine()
   {
-    super(Material.IRON, "turbine", true);
+    super(Material.IRON, true);
   }
   
   @Override
   public TileTurbine createTileEntity(World world, IBlockState state)
   {
     return new TileTurbine();
-  }
-  
-  @Override
-  public Class<TileTurbine> getTileEntityClass()
-  {
-    return TileTurbine.class;
   }
   
   @Override

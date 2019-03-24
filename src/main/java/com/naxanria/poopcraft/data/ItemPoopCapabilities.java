@@ -52,7 +52,7 @@ public class ItemPoopCapabilities
   
   public static void register(ItemPoopCapabilities capabilities)
   {
-    PoopCraft.logger.info("Registering poop capabilities for " + capabilities.id);
+//    PoopCraft.logger.info("Registering poop capabilities for " + capabilities.id);
     poopCapabilities.put(capabilities.id, capabilities);
   }
   
@@ -63,6 +63,8 @@ public class ItemPoopCapabilities
   
   public static void init()
   {
+    
+    
     for (ItemPoop poop :
       ItemPoop.poops)
     {

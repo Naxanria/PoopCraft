@@ -16,27 +16,25 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class BlockTileFacingBase<TE extends TileEntityBase> extends BlockTileBase<TE>
+public abstract class BlockTileFacingBase<TE extends TileEntityBase> extends BlockFacingBase
 {
   public static final PropertyDirection FACING = BlockHorizontal.FACING;
   
   protected boolean mirrorPlacement = false;
   
-  public BlockTileFacingBase(Material blockMaterial, String name)
+  public BlockTileFacingBase(Material blockMaterial, boolean mirrorPlacement)
   {
-    this(blockMaterial, name, false);
+    super(blockMaterial, mirrorPlacement);
   }
   
-  public BlockTileFacingBase(Material blockMaterial, String name, boolean mirrorPlacement)
+  public BlockTileFacingBase(Material blockMaterial)
   {
-    super(blockMaterial, name);
-    
-    setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    
-    this.mirrorPlacement = mirrorPlacement;
+    super(blockMaterial);
   }
+  
   
   @Override
   public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
@@ -126,4 +124,19 @@ public abstract class BlockTileFacingBase<TE extends TileEntityBase> extends Blo
   {
     return new BlockStateContainer(this, FACING);
   }
+  
+  @Override
+  public boolean hasTileEntity(IBlockState state)
+  {
+    return true;
+  }
+  
+  public TE getTileEntity(IBlockAccess world, BlockPos pos)
+  {
+    return (TE) world.getTileEntity(pos);
+  }
+  
+  public abstract TE createTileEntity(World world, IBlockState state);
+  
+//  public abstract Class<TE> getTileEntityClass();
 }

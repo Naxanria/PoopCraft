@@ -2,6 +2,8 @@ package com.naxanria.poopcraft.blocks.base;
 
 import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.tile.base.TileEntityBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,11 +14,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public abstract class BlockTileBase<TE extends TileEntityBase> extends BlockBase
+public abstract class BlockTileBase<TE extends TileEntityBase> extends Block
 {
-  public BlockTileBase(Material blockMaterial, String name)
+  public BlockTileBase(Material blockMaterialIn, MapColor blockMapColorIn)
   {
-    super(blockMaterial, name);
+    super(blockMaterialIn, blockMapColorIn);
+  }
+  
+  public BlockTileBase(Material materialIn)
+  {
+    super(materialIn);
   }
   
   @Override
@@ -32,44 +39,25 @@ public abstract class BlockTileBase<TE extends TileEntityBase> extends BlockBase
   
   public abstract TE createTileEntity(World world, IBlockState state);
   
-  public abstract Class<TE> getTileEntityClass();
+//  public abstract Class<TE> getTileEntityClass();
   
-  public void registerTileEntity()
-  {
-    if (needTileEntityRegistration())
-    {
-      PoopCraft.logger.info("Registering " + getTileEntityClass().getCanonicalName() + " as a TileEntity");
-      
-      GameRegistry.registerTileEntity(getTileEntityClass(), getRegistryName().toString());
-      
-      String tileEntityRenderer = getTileEntityRendererClass();
-      if (tileEntityRenderer != null)
-      {
-        PoopCraft.proxy.registerTileEntityRenderer(getTileEntityClass(), tileEntityRenderer);
-      }
-    }
-  }
-  
-  public String getTileEntityRendererClass()
-  {
-    return null;
-  }
-  
-  protected boolean needTileEntityRegistration()
-  {
-    return true;
-  }
-  
-  @Override
-  public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
-  {
-    neighborUpdate();
-  }
-  
-  private void neighborUpdate()
-  {
-  
-  }
+//  public void registerTileEntity()
+//  {
+//    if (needTileEntityRegistration())
+//    {
+//      PoopCraft.logger.info("Registering " + getTileEntityClass().getCanonicalName() + " as a TileEntity");
+//
+//      GameRegistry.registerTileEntity(getTileEntityClass(), getRegistryName().toString());
+//
+//      String tileEntityRenderer = getTileEntityRendererClass();
+//      if (tileEntityRenderer != null)
+//      {
+//        PoopCraft.proxy.registerTileEntityRenderer(getTileEntityClass(), tileEntityRenderer);
+//      }
+//    }
+//  }
+
+
   
   @Override
   public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
@@ -86,16 +74,16 @@ public abstract class BlockTileBase<TE extends TileEntityBase> extends BlockBase
     
     super.getDrops(drops, world, pos, state, fortune);
   }
-  
-  @Override
-  public boolean hasComparatorInputOverride(IBlockState state)
-  {
-    return true;
-  }
-  
-  @Override
-  public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos)
-  {
-    return getTileEntity(world, pos).getComparatorStrength();
-  }
+//
+//  @Override
+//  public boolean hasComparatorInputOverride(IBlockState state)
+//  {
+//    return true;
+//  }
+//
+//  @Override
+//  public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos)
+//  {
+//    return getTileEntity(world, pos).getComparatorStrength();
+//  }
 }

@@ -21,7 +21,7 @@ public class BlockToilet extends BlockTileFacingBase<TileToilet>
   
   public BlockToilet()
   {
-    super(Material.IRON, "toilet");
+    super(Material.IRON);
   }
   
   @Override
@@ -65,11 +65,5 @@ public class BlockToilet extends BlockTileFacingBase<TileToilet>
   {
     PoopCraft.logger.info("Created toilet");
     return new TileToilet();
-  }
-  
-  @Override
-  public Class<TileToilet> getTileEntityClass()
-  {
-    return TileToilet.class;
   }
 }

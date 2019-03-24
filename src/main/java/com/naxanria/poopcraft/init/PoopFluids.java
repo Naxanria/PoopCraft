@@ -1,19 +1,25 @@
 package com.naxanria.poopcraft.init;
 
-import com.naxanria.poopcraft.fluid.BlockFluidMethane;
-import com.naxanria.poopcraft.fluid.FluidMethane;
-import com.naxanria.poopcraft.init.registry.FluidRegistry;
+import com.naxanria.poopcraft.PoopCraft;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 
 public class PoopFluids
 {
-  public static final FluidMethane METHANE = new FluidMethane();
-  public static final BlockFluidMethane BLOCK_METHANE = new BlockFluidMethane(METHANE); //new BlockFluidBase("block_methane", METHANE, PoopMaterials.METHANE);
-  
-  public static void register(FluidRegistry registry)
+  private static Fluid createFluid(String name)
   {
-    registry.addAll
+    Fluid fluid = new Fluid
     (
-      BLOCK_METHANE
+      name,
+      new ResourceLocation(PoopCraft.MODID, "blocks/" + name + "_still"),
+      new ResourceLocation(PoopCraft.MODID, "blocks/" + name + "_flowing"),
+      new ResourceLocation(PoopCraft.MODID, "blocks/" + name + "_overlay")
     );
+    
+    fluid.setUnlocalizedName(PoopCraft.MODID + "." + name);
+    
+    return fluid;
   }
+  
+  public static final Fluid METHANE = createFluid("methane").setGaseous(true).setDensity(-1).setViscosity(800);
 }

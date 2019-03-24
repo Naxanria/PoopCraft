@@ -19,12 +19,12 @@ public class PoopCraftTab extends CreativeTabs
   {
     super.displayAllRelevantItems(list);
     
-    list.add(PoopFluids.METHANE.getAsBucket());
+//    list.add(PoopFluids.METHANE.getAsBucket());
   }
   
   @Override
   public ItemStack getTabIconItem()
   {
-    return new ItemStack(PoopBlocks.TOILET.getAsItem());
+    return new ItemStack(PoopBlocks.TOILET);
   }
 }

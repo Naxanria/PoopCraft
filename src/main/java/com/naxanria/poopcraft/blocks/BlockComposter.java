@@ -1,11 +1,9 @@
 package com.naxanria.poopcraft.blocks;
 
-import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.blocks.base.BlockTileFacingBase;
 import com.naxanria.poopcraft.tile.TileComposter;
 import com.naxanria.poopcraft.tile.base.inventory.ItemStackHandlerBase;
 import com.naxanria.poopcraft.util.ItemHandlerHelper;
-import com.naxanria.poopcraft.util.StackUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +19,7 @@ public class BlockComposter extends BlockTileFacingBase<TileComposter>
 {
   public BlockComposter()
   {
-    super(Material.IRON, "composter", true);
+    super(Material.IRON,  true);
   }
   
   @Override
@@ -29,12 +27,12 @@ public class BlockComposter extends BlockTileFacingBase<TileComposter>
   {
     return new TileComposter();
   }
-  
-  @Override
-  public Class<TileComposter> getTileEntityClass()
-  {
-    return TileComposter.class;
-  }
+//
+//  @Override
+//  public Class<TileComposter> getTileEntityClass()
+//  {
+//    return TileComposter.class;
+//  }
   
   @Override
   public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
@@ -63,5 +61,11 @@ public class BlockComposter extends BlockTileFacingBase<TileComposter>
     }
     
     return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+  }
+  
+  @Override
+  public boolean isOpaqueCube(IBlockState state)
+  {
+    return false;
   }
 }

@@ -13,9 +13,9 @@ import net.minecraft.util.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.naxanria.poopcraft.init.PoopItems.POOPS.POOP_CHICKEN;
-import static com.naxanria.poopcraft.init.PoopItems.POOPS.POOP_DEFAULT;
-import static com.naxanria.poopcraft.init.PoopItems.POOPS.POOP_ZOMBIE;
+import static com.naxanria.poopcraft.init.PoopItems.POOP_CHICKEN;
+import static com.naxanria.poopcraft.init.PoopItems.POOP_DEFAULT;
+import static com.naxanria.poopcraft.init.PoopItems.POOP_ZOMBIE;
 
 public class EntityPoopCapabilities
 {
@@ -52,6 +52,9 @@ public class EntityPoopCapabilities
     
     PoopCraft.logger.info("=== LOADING DEFAULTS FOR ENTITIES ===");
     
+    int t = 0;
+    long start = System.nanoTime();
+    
     for(ResourceLocation location: EntityList.getEntityNameList())
     {
       if (!Settings.makeNonMinecraftCreaturesPoop && !location.getResourceDomain().equals("minecraft"))
@@ -81,8 +84,12 @@ public class EntityPoopCapabilities
         poopCapabilities.cooldown = 6000;
         
         register(poopCapabilities);
+        
+        t++;
       }
     }
+    
+    PoopCraft.logger.info("Registered defaults for " + t + " in " + (System.nanoTime() - start) + "ns");
   }
   
   public static <T extends EntityCreature> void register(Class<T> clazz, Item poop, int cooldown)
@@ -97,7 +104,7 @@ public class EntityPoopCapabilities
   
   public static void register(EntityPoopCapabilities capability)
   {
-    PoopCraft.logger.info("Registering PoopEntity: " + capability.id);
+//    PoopCraft.logger.info("Registering PoopEntity: " + capability.id);
     
     capabilities.put(capability.id, capability);
   }

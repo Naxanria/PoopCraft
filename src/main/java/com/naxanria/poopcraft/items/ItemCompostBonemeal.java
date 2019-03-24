@@ -2,6 +2,7 @@ package com.naxanria.poopcraft.items;
 
 import com.naxanria.poopcraft.util.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -9,13 +10,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemCompostBonemeal extends ItemCompost
+public class ItemCompostBonemeal extends Item
 {
-  public ItemCompostBonemeal()
-  {
-    super("compost_bonemeal");
-  }
-  
   @Override
   public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
   {
@@ -25,7 +21,6 @@ public class ItemCompostBonemeal extends ItemCompost
     {
       return EnumActionResult.FAIL;
     }
-  
     
     boolean applied = false;
     for (int x = -1; x <= 1 ; x++)

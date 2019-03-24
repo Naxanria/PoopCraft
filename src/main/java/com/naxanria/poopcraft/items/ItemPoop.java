@@ -1,14 +1,13 @@
 package com.naxanria.poopcraft.items;
 
-import com.naxanria.poopcraft.items.base.ItemBase;
+import com.naxanria.poopcraft.PoopCraft;
 import com.naxanria.poopcraft.data.ItemPoopCapabilities;
-import com.naxanria.poopcraft.util.StackUtil;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemPoop extends ItemBase
+public class ItemPoop extends Item// extends ItemBase
 {
   public static List<ItemPoop> poops = new ArrayList<>();
   
@@ -16,13 +15,15 @@ public class ItemPoop extends ItemBase
   
   public ItemPoop(String name, int methaneAmount, int compostAmount, int compostTime)
   {
-    super(name);
+    setCreativeTab(PoopCraft.tab);
+    setRegistryName(name);
+    setUnlocalizedName(PoopCraft.MODID + "." + name);
     
     defaultCapabilities = new ItemPoopCapabilities();
     defaultCapabilities.methaneAmount = methaneAmount;
     defaultCapabilities.compostAmount = compostAmount;
     defaultCapabilities.compostTime = compostTime;
-    defaultCapabilities.id = StackUtil.getItemId(new ItemStack(this));
+    defaultCapabilities.id = PoopCraft.MODID + ":" + name;//StackUtil.getItemId(new ItemStack(this));
     
     poops.add(this);
   }

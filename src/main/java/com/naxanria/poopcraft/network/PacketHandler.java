@@ -32,6 +32,7 @@ public class PacketHandler
       @Override
       public void handleData(NBTTagCompound compound, MessageContext context)
       {
+//        PoopCraft.logger.info("Tile Data");
         World world = Minecraft.getMinecraft().world;
       
         if (world != null)

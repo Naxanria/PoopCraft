@@ -1,44 +1,50 @@
 package com.naxanria.poopcraft.init;
 
-import com.naxanria.poopcraft.init.registry.ItemRegistry;
-import com.naxanria.poopcraft.items.ItemCompost;
-import com.naxanria.poopcraft.items.ItemCompostBonemeal;
-import com.naxanria.poopcraft.items.ItemPoop;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
+@GameRegistry.ObjectHolder("poopcraft")
 public class PoopItems
 {
-  public static class POOPS
-  {
-    public static final ItemPoop POOP_HUMAN = new ItemPoop("poop_human", 3, 2, 60);
-    public static final ItemPoop POOP_SOGGY = new ItemPoop("poop_soggy", 5, 1, 120);
-    
-    // hostiles
-    public static final ItemPoop POOP_ZOMBIE = new ItemPoop("poop_zombie", 2, 2, 160);
-    
-    // passives
-    public static final ItemPoop POOP_CHICKEN = new ItemPoop("poop_chicken", 4, 2, 15);
-    
-    public static final ItemPoop POOP_DEFAULT = new ItemPoop("poop_default", 3, 3, 30);
-  }
+  /** block items **/
   
-  public static final ItemCompost COMPOST = new ItemCompost();
-  public static final ItemCompostBonemeal COMPOST_BONEMEAL = new ItemCompostBonemeal();
+  public static final Item COMPOSTER = Items.AIR;
+  public static final Item TOILET = Items.AIR;
+  public static final Item TURBINE = Items.AIR;
   
-  public static void register(ItemRegistry registry)
-  {
-    registry.addAll
-    (
-      POOPS.POOP_HUMAN,
-      POOPS.POOP_SOGGY,
-      
-      POOPS.POOP_ZOMBIE,
-      
-      POOPS.POOP_CHICKEN,
-      
-      POOPS.POOP_DEFAULT,
-      
-      COMPOST,
-      COMPOST_BONEMEAL
-    );
-  }
+  
+  /** poop **/
+  public static final Item POOP_HUMAN = Items.AIR;
+  public static final Item POOP_SOGGY = Items.AIR;
+  
+  // hostiles
+  public static final Item POOP_ZOMBIE = Items.AIR;
+  
+  // passives
+  public static final Item POOP_CHICKEN = Items.AIR;
+  
+  public static final Item POOP_DEFAULT = Items.AIR;
+  
+  
+  public static final Item COMPOST = Items.AIR;;
+  public static final Item COMPOST_BONEMEAL = Items.AIR;;
+
+//  public static void register(ItemRegistry registry)
+//  {
+//    registry.addAll
+//    (
+//      POOP_HUMAN,
+//      POOP_SOGGY,
+//
+//      POOP_ZOMBIE,
+//
+//      POOP_CHICKEN,
+//
+//      POOP_DEFAULT,
+//
+//      COMPOST,
+//      COMPOST_BONEMEAL
+//    );
+//  }
 }

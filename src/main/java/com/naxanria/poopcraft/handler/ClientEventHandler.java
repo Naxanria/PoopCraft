@@ -34,7 +34,7 @@ public class ClientEventHandler
   private int posX = 0;
   private int posY = 0;
   
-  private ItemStack stack = new ItemStack(PoopItems.POOPS.POOP_HUMAN);
+  private ItemStack stack = new ItemStack(PoopItems.POOP_HUMAN);
   
   @SubscribeEvent
   public void onGameOverlay(RenderGameOverlayEvent.Post event)
@@ -84,6 +84,11 @@ public class ClientEventHandler
   @SubscribeEvent
   public void onTooltipEvent(ItemTooltipEvent event)
   {
+    if (event.getToolTip() != null)
+    {
+      return;
+    }
+    
     ItemStack stack = event.getItemStack();
     
     if (!StackUtil.isValid(stack))

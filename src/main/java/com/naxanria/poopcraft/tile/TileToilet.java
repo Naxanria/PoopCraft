@@ -35,9 +35,9 @@ public class TileToilet extends TileEntityTickingBase
       {
         int amount = Math.min(inputStack.getCount(), 64 - outputStack.getCount());
         
-        if (outputStack.isEmpty() || outputStack.getItem() != PoopItems.POOPS.POOP_SOGGY)
+        if (outputStack.isEmpty() || outputStack.getItem() != PoopItems.POOP_SOGGY)
         {
-          output.setStackInSlot(0, new ItemStack(PoopItems.POOPS.POOP_SOGGY, amount));
+          output.setStackInSlot(0, new ItemStack(PoopItems.POOP_SOGGY, amount));
         }
         else
         {
@@ -56,7 +56,7 @@ public class TileToilet extends TileEntityTickingBase
   
   private boolean validateSlot(int slot, ItemStack stack)
   {
-    return stack.getItem() == PoopItems.POOPS.POOP_HUMAN;
+    return stack.getItem() == PoopItems.POOP_HUMAN;
   }
   
   @Override

@@ -21,7 +21,7 @@ tile.poopcraft.composter.name=Composter
 tile.poopcraft.turbine.name=Turbine
 
 ### Fluids ###
-fluid.poopcraft.fluid_methane=Methane
+fluid.poopcraft.methane=Methane
 
 ### Tooltips ###
 tooltip.poopcraft.methane=Methane

@@ -39,7 +39,7 @@ public class PlayerPoop implements IPlayerPoop, INBTSerializable<NBTTagCompound>
   {
     if (!player.world.isRemote)
     {
-      WorldUtil.dropItemInWorld(player.world, player.getPosition(), PoopItems.POOPS.POOP_HUMAN);
+      WorldUtil.dropItemInWorld(player.world, player.getPosition(), PoopItems.POOP_HUMAN);
     }
     
     hasToPoop = false;
